@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Todo Application</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" rel="stylesheet" media="screen" />
+    <!--    <link th:href = "@{/static/css/style.css}" href="../../static/css/style.css" rel="stylesheet" />-->
+</head>
+<body>
+<div class="container mt-5">
+    <div class="ml-3">
+        <h3>Login Form</h3>
+    </div>
+    <div th:if="${param.error}" class="alert-danger ml-3 col-sm-10">
+        Invalid username and password.
+    </div>
+    <div th:if="${param.logout}" class="alert-success ml-3 col-sm-10">
+        You have been logged out.
+    </div>
+    <form th:action="@{/loginPost}"  th:object="${user}" method="post">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Email:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="email" required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Password:</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="password" required/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-10">
+                <input type="submit" class="btn btn-outline-primary" value="Sign In" />
+                <a class="btn btn-outline-danger" th:href="@{/}">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
