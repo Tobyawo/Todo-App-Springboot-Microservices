@@ -1,19 +1,25 @@
-package com.example.demo.Controller;
+package com.example.todo.Controller;
 
 
-import com.example.demo.Model.Task;
-import com.example.demo.Service.TaskService;
+import com.example.todo.Model.Task;
+import com.example.todo.Model.User;
+import com.example.todo.Service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
+@EnableScheduling
 public class TaskController {
 
     TaskService taskService;
@@ -23,23 +29,36 @@ public class TaskController {
         this.taskService=taskService;
     }
 
-
+//    @Scheduled(cron="*/10 * * * * ?")
+    @Scheduled(fixedDelay = 10000, initialDelay = 60000)
+    public void taskSchedule()
+    {
+      System.out.println("Method executed at every(10sec after startup)  and then 10 seconds onward . Current time is :: "+ new Date());
+    }
 
     @GetMapping("/todoHome")
-    public ModelAndView TodoHomePage(ModelAndView mav) throws ParseException {
+    public ModelAndView TodoHomePage(ModelAndView mav, HttpSession httpSession, Model model) throws ParseException {
+        User user = (User) httpSession.getAttribute("user");
+        if(user!=null){
         mav = new ModelAndView("todos");
         List<Task> taskList = taskService.listOfAllTask();
+        String momentdate = taskService.getDate();
         Task task = new Task();
         mav.addObject("Task",task);
         mav.addObject("taskList",taskList);
-        mav.addObject("endDate", new SimpleDateFormat("yyyy-MM-dd").parse("2022-01-01"));
-        return mav;
+        mav.addObject("moment", momentdate);
+             return mav;}
+        else{mav = new ModelAndView("NewIndex");
+            return mav;}
     }
 
     @PostMapping("/addTask")
-    public String TodoHome(@ModelAttribute("Task") Task task){
+    public String TodoHome(@ModelAttribute("Task") Task task, HttpSession httpSession) throws ParseException {
+        User user = (User) httpSession.getAttribute("user");
+        if(user!=null){
         taskService.addTask(task);
-        return "redirect:/todoHome";
+        return "redirect:/todoHome";}
+        else{ return "redirect:/";}
     }
     @RequestMapping(path = "/viewTask/{id}", method = RequestMethod.GET)
     public String viewTodo(Model model, @PathVariable Long id){
@@ -81,8 +100,6 @@ public class TaskController {
     }
 
 
-
-
     @GetMapping("/filterTask")
     public ModelAndView filterTask(Model model, @RequestParam(value = "search", required = false) String status){
         ModelAndView mav = new ModelAndView("todos");
@@ -115,11 +132,11 @@ public class TaskController {
     }
 
 
-//    @GetMapping
-//    public String countdown(Model model) throws ParseException {
-//        model.addAttribute("endDate", new SimpleDateFormat("yyyy-MM-dd").parse("2022-01-01"));
-//        return "index";
-//    }
+    @GetMapping
+    public String countdown(Model model) throws ParseException {
+        model.addAttribute("endDate", new SimpleDateFormat("yyyy-MM-dd").parse("2022-01-01"));
+        return "index";
+    }
 
 
 }

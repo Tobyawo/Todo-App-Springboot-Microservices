@@ -1,6 +1,4 @@
-package com.example.demo.Model;
-
-import lombok.*;
+package com.example.todo.Model;
 
 import javax.persistence.*;
 

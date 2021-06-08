@@ -1,6 +1,6 @@
-package com.example.demo.Repositories;
+package com.example.todo.Repositories;
 
-import com.example.demo.Model.Task;
+import com.example.todo.Model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

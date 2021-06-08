@@ -1,6 +1,6 @@
-package com.example.demo.Repositories;
+package com.example.todo.Repositories;
 
-import com.example.demo.Model.User;
+import com.example.todo.Model.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

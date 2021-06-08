@@ -1,8 +1,8 @@
-package com.example.demo.Controller;
+package com.example.todo.Controller;
 
-import com.example.demo.Model.Task;
-import com.example.demo.Model.User;
-import com.example.demo.Service.UserService;
+import com.example.todo.Model.Task;
+import com.example.todo.Model.User;
+import com.example.todo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
-import java.util.List;
+
 
 @Controller
 public class UserController {
@@ -19,25 +18,22 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    //1
+
     @RequestMapping(path = "/")
     public String indexPage(Model model){
         Task task = new Task();
         model.addAttribute("Task",task);
-        return "NewIndex";
-    }
+        return "NewIndex"; }
 
 
-    @GetMapping("/login")  // when a request link to loginup page is clicked on. it come here
+    @GetMapping("/login")
     public String showloginForm(Model model) {
-        User user = new User(); // A User object to represent the information in the form.
+        User user = new User();
         model.addAttribute("user", user);
         model.addAttribute("invalid", null);
-        return "loginPage";
-    }
+        return "loginPage"; }
 
 
-    //2
     @RequestMapping(value = "/loginPost", method= RequestMethod.POST)
     public String checkUserlogin(@ModelAttribute("user") User user, Model model, HttpSession httpSession) {
         User user1 = service.getUserByEmail(user.getEmail());
@@ -48,20 +44,29 @@ public class UserController {
         user1 = service.getUserByEmailAndPassword(user.getEmail(), user.getPassword());
         if (user1 == null) {
             model.addAttribute("invalid", "Incorrect password");
-            return "loginPage";
-        }
+            return "loginPage"; }
         httpSession.setAttribute("user", user1);
         return "redirect:/todoHome";
     }
+
+
+    @GetMapping("/logout")
+    public String loggingOut(Model model, HttpSession session) {
+        if (session != null) {
+            session.invalidate();
+        }
+        model.addAttribute("user", new User());
+        model.addAttribute("invalid", null);
+        return "redirect:/login";
+    }
+
+
+
 
     @GetMapping("/signUp")
     public String showSignUpForm(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-
-//        List<String> listGender = Arrays.asList("Male", "Female"); //a List of Gender that will be used to display a select box/dropdown list in the form.
-//        model.addAttribute("listGender", listGender);
-
         return "SignUp";
     }
 

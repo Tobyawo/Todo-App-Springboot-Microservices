@@ -1,15 +1,15 @@
-package com.example.demo.Service;
+package com.example.todo.Service;
 
 
-import com.example.demo.Model.Task;
-import com.example.demo.Repositories.TaskRepository;
+import com.example.todo.Model.Task;
+import com.example.todo.Repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskService{
@@ -22,13 +22,30 @@ public class TaskService{
 
 
 
-    public void addTask(Task task){
+    public void addTask(Task task) throws ParseException {
         task.setCreatedAt(getDate());
+      String startdate =  task.getStartAt();
+      String endDate = task.getDueAt();
+        LocalDateTime localstrtdate = LocalDateTime.parse(startdate);
+        LocalDateTime localduedate = LocalDateTime.parse(endDate);
+       String lsd = localstrtdate.format(DateTimeFormatter.ofPattern("hh:mm a | dd-MMM"));
+      String ldd =  localduedate.format(DateTimeFormatter.ofPattern("hh:mm a | dd-MMM"));
+        task.setStartAt(lsd);
+       task.setDueAt(ldd);
         taskRepository.save(task);
     }
 
+
     public void addEditedTask(Task task){
         task.setUpdatedAt(getDate());
+        String startdate =  task.getStartAt();
+        String endDate = task.getDueAt();
+        LocalDateTime localstrtdate = LocalDateTime.parse(startdate);
+        LocalDateTime localduedate = LocalDateTime.parse(endDate);
+        String lsd = localstrtdate.format(DateTimeFormatter.ofPattern("hh:mm a | dd-MMM"));
+        String ldd =  localduedate.format(DateTimeFormatter.ofPattern("hh:mm a | dd-MMM"));
+        task.setStartAt(lsd);
+        task.setDueAt(ldd);
         taskRepository.save(task);
     }
 
@@ -61,6 +78,6 @@ public class TaskService{
 
     public String getDate() {
         LocalDateTime dateTime = LocalDateTime.now();
-        return dateTime.format(DateTimeFormatter.ofPattern("hh:mm a | dd-MMM"));
+       return dateTime.format(DateTimeFormatter.ofPattern("hh:mm a | dd-MMM"));
     }
 }

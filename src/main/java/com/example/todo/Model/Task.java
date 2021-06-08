@@ -1,15 +1,11 @@
-package com.example.demo.Model;
+package com.example.todo.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.Date;
-
 
 
 @Entity
@@ -30,6 +26,8 @@ public class Task {
     private String createdAt;
     private String updatedAt;
     private String completedAt;
+    private String startAt;
+    private String dueAt;
     private String status;
 
 

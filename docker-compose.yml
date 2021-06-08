@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  docker-todo-app:
+    container_name: docker-todo-app
+    image: docker-todo-app
+    build: ./
+    ports:
+      - "8045:8080"
+    depends_on:
+      - postgresqldb
+  postgresqldb:
+    image: postgres
+    ports:
+      - "5440:5432"
+    environment:
+      - POSTGRES_PASSWORD=todo
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=todoDB
