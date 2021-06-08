@@ -29,12 +29,12 @@ public class TaskController {
         this.taskService=taskService;
     }
 
-//    @Scheduled(cron="*/10 * * * * ?")
-    @Scheduled(fixedDelay = 10000, initialDelay = 60000)
-    public void taskSchedule()
-    {
-      System.out.println("Method executed at every(10sec after startup)  and then 10 seconds onward . Current time is :: "+ new Date());
-    }
+////    @Scheduled(cron="*/10 * * * * ?")
+//    @Scheduled(fixedDelay = 10000, initialDelay = 60000)
+//    public void taskSchedule()
+//    {
+//      System.out.println("Method executed at every(10sec after startup)  and then 10 seconds onward . Current time is :: "+ new Date());
+//    }
 
     @GetMapping("/todoHome")
     public ModelAndView TodoHomePage(ModelAndView mav, HttpSession httpSession, Model model) throws ParseException {
